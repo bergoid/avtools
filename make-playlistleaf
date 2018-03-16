@@ -1,0 +1,11 @@
+#!/bin/bash
+
+. rabot-utils
+if [ "$?" -ne "0" ]; then
+  echo "$0: Error while sourcing rabot-utils" >&2
+  exit 1
+fi
+
+if isLeafDir "$(pwd)"; then
+    make-playlist
+fi

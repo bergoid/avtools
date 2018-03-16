@@ -1,0 +1,11 @@
+#!/bin/bash
+
+fileName=playlist.m3u
+
+fnt . opus flac mp3 m4a > "$fileName"
+
+if [ ! -s "$fileName" ];then
+    rm "$fileName"
+else
+    echo "$(readlink -f "$fileName")"
+fi
