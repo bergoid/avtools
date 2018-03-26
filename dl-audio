@@ -16,6 +16,4 @@ DOCSTRING
 checkForHelp $1
 minNumArgs 1 $#
 
-#echo https_proxy == "$https_proxy"
-#youtube-dl --proxy "$https_proxy" --no-mtime -x -o "%(title)s.%(ext)s" "$1"
-youtube-dl --no-mtime -x -o "%(upload_date)s%(title)s.%(ext)s" "$1"
+youtube-dl --no-mtime -x -o "%(upload_date)s %(title)s.%(ext)s" "$1"
