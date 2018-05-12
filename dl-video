@@ -16,4 +16,6 @@ DOCSTRING
 checkForHelp $1
 minNumArgs 1 $#
 
+require youtube-dl
+
 youtube-dl --no-mtime -o "%(upload_date)s %(title)s.%(ext)s" "$1"

@@ -1,0 +1,46 @@
+#!/bin/bash
+
+. rabot-utils
+if [ "$?" -ne "0" ]; then
+  echo "$0: Error while sourcing rabot-utils" >&2
+  exit 1
+fi
+
+function showHelp
+{
+cat << DOCSTRING
+Usage: $(basename "$0") TRANSFORM FILENAME
+
+'$(basename "$0")' will rotate a video.
+
+FILENAME is the input video file.
+
+TRANSFORM must have one of these values:
+    0 : 90 degrees counterclockwise and vertical flip
+    1 : 90 degrees clockwise
+    2 : 90 degrees counterclockwise
+    3 : 90 degrees clockwise and vertical flip
+
+The output file will be in the same folder as FILENAME and have "_rotated"
+added to its name, with the same extension as the input video file.
+DOCSTRING
+}
+
+checkForHelp $1
+minNumArgs 2 $#
+
+require ffmpeg
+
+fullFileName="$(basename "$2")"
+exitOnError
+
+fileDir="$(dirname "$2")"
+exitOnError
+
+fileName="${fullFileName%.*}"
+exitOnError
+
+extension="${fullFileName##*.}"
+exitOnError
+
+ffmpeg -i "$2" -vf "transpose=$1" -c:a copy "${fileDir}/${fileName}_rotated.${extension}"
