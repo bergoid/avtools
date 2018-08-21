@@ -18,4 +18,4 @@ minNumArgs 1 $#
 
 require youtube-dl
 
-youtube-dl --no-mtime -x --audio-format "mp3" -o "%(upload_date)s %(title)s.%(ext)s" "$1"
+youtube-dl --no-mtime -x --audio-format "mp3" -o "$(ytdl-formatstring)" $*

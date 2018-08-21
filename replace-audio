@@ -1,0 +1,48 @@
+#!/bin/bash
+
+. rabot-utils
+if [ "$?" -ne "0" ]; then
+  echo "$0: Error while sourcing rabot-utils" >&2
+  exit 1
+fi
+
+function showHelp
+{
+cat << DOCSTRING
+Usage: $(basename "$0") VIDEO NEWAUDIO
+
+'$(basename "$0")' will replace the audio track of a video
+with the contents of another audio file.
+
+VIDEO is the input video file.
+NEWAUDIO is the input audio file.
+
+The output file will be in the same folder as VIDEO and have "_newaudio"
+added to its name, with the same extension as the input video file.
+DOCSTRING
+}
+
+checkForHelp $1
+minNumArgs 2 $#
+
+require ffmpeg
+
+inputVideoPath="$1"
+exitOnError
+
+inputVideoFilename="$(basename "$inputVideoPath")"
+exitOnError
+
+inputAudioPath="$2"
+exitOnError
+
+inputVideoDir="$(dirname "$inputVideoPath")"
+exitOnError
+
+inputVideoName="${inputVideoFilename%.*}"
+exitOnError
+
+inputVideoExtension="${inputVideoFilename##*.}"
+exitOnError
+
+ffmpeg -i "$inputVideoPath" -i "$inputAudioPath" -c:v copy -map 0:v:0 -map 1:a:0 "${inputVideoDir}/${inputVideoName}_newaudio.${inputVideoExtension}"

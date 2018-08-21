@@ -1,0 +1,22 @@
+#!/bin/bash
+
+. rabot-utils
+if [ "$?" -ne "0" ]; then
+  echo "$0: Error while sourcing rabot-utils" >&2
+  exit 1
+fi
+
+function showHelp
+{
+cat << DOCSTRING
+Usage: $(basename "$0")
+Outputs the format string for the name of the destination file
+of the the tools using 'youtube-dl'
+
+See also: 'dl-audio', 'dl-video', 'dl-mp3'
+DOCSTRING
+}
+
+checkForHelp $1
+
+echo "%(upload_date)s %(uploader)s %(title)s.%(ext)s"
