@@ -19,4 +19,4 @@ DOCSTRING
 
 checkForHelp $1
 
-echo "%(upload_date)s %(uploader)s %(title)s.%(ext)s"
+echo "%(upload_date)s %(uploader)s %(title)s %(id)s.%(ext)s"
