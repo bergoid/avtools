@@ -1,0 +1,32 @@
+#!/bin/bash
+
+. rabot-utils
+if [ "$?" -ne "0" ]; then
+  echo "$0: Error while sourcing rabot-utils" >&2
+  exit 1
+fi
+
+function showHelp
+{
+cat << DOCSTRING
+Usage: $(basename "$0") IMAGE AUDIO VIDEO
+
+'$(basename "$0")' will convert an image and an audio file to a video file.
+
+The video format (as specified by the filename extension in VIDEO) must support
+the audio encoding format (as specified by the filename extension in AUDIO).
+
+Otherwise ffmpeg would have to transcode the audio and this results
+(as of July 2019) in a video file of incorrect length.
+
+If your desired video format doesn't support the format of AUDIO, transcode
+the audio beforehand.
+DOCSTRING
+}
+
+checkForHelp $1
+minNumArgs 3 $#
+
+require ffmpeg
+
+ffmpeg -r 1 -loop 1 -i "$1" -i "$2" -r 1 -acodec copy -shortest "$3"
