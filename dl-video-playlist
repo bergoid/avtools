@@ -24,10 +24,8 @@ require jq
 
 url="$1"
 
-#echo -----
-#echo $url
-#echo -----
 playlistName="$(youtube-dl --no-warnings --dump-single-json "$url" | jq -r '.title')"
+playlistName="$(echo "$playlistName" | sed -e "s/[:\"]/_/g")"
 
 try mkdir "$playlistName"
 try cd "$playlistName"
