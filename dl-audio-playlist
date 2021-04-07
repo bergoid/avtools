@@ -1,0 +1,33 @@
+#!/bin/bash
+
+. rabot-utils
+if [ "$?" -ne "0" ]; then
+  echo "$0: Error while sourcing rabot-utils" >&2
+  exit 1
+fi
+
+function showHelp
+{
+cat << DOCSTRING
+Usage: $(basename "$0") URL
+
+'$(basename "$0")' downloads the audio of a Youtube playlist
+into its own folder.
+DOCSTRING
+}
+
+minNumArgs 1 $#
+checkForHelp $1
+
+require youtube-dl
+require jq
+
+url="$1"
+
+playlistName="$(youtube-dl --no-warnings --dump-single-json "$url" | jq -r '.title')"
+playlistName="$(echo "$playlistName" | sed -e "s/[:\"]/_/g")"
+
+try mkdir "$playlistName"
+try cd "$playlistName"
+
+dl-audio -o "%(playlist_index)s. %(title)s.%(ext)s" "$url"

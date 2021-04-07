@@ -18,4 +18,4 @@ minNumArgs 1 $#
 
 require youtube-dl
 
-youtube-dl -i --no-mtime -o "$(ytdl-formatstring)" $*
+youtube-dl -i --no-mtime -o "$(ytdl-formatstring)" "$@"
