@@ -9,7 +9,9 @@ fi
 function showHelp
 {
 cat << DOCSTRING
-Usage: $(basename "$0") URL
+Usage: $(basename "$0") CHANNEL_URL
+This script retireves the urls of all videos on a given
+Youtube channel and prints them on stdout.
 DOCSTRING
 }
 
@@ -17,5 +19,6 @@ checkForHelp $1
 minNumArgs 1 $#
 
 require yt-dlp
+require jq
 
-yt-dlp -i --no-mtime -x -o "$(ytdl-formatstring)" "$@"
+yt-dlp --dump-json --ignore-errors "$1" | jq -r '"\(.webpage_url)"'

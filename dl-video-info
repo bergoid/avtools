@@ -18,4 +18,4 @@ minNumArgs 1 $#
 
 require yt-dlp
 
-yt-dlp -i --no-mtime -x -o "$(ytdl-formatstring)" "$@"
+yt-dlp -i --no-mtime -o "$(ytdl-formatstring)" --no-progress --write-description --write-info-json "$@"

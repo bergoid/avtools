@@ -11,7 +11,7 @@ function showHelp
 cat << DOCSTRING
 Usage: $(basename "$0")
 Outputs the format string for the name of the destination file
-of the the tools using 'youtube-dl'
+of the the tools using 'yt-dlp'
 
 See also: 'dl-audio', 'dl-video', 'dl-mp3'
 DOCSTRING

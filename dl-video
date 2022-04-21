@@ -16,6 +16,6 @@ DOCSTRING
 checkForHelp $1
 minNumArgs 1 $#
 
-require youtube-dl
+require yt-dlp
 
-youtube-dl -i --no-mtime -o "$(ytdl-formatstring)" "$@"
+yt-dlp -i --no-mtime -o "$(ytdl-formatstring)" "$@"

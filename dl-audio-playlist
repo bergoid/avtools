@@ -19,15 +19,16 @@ DOCSTRING
 minNumArgs 1 $#
 checkForHelp $1
 
-require youtube-dl
+require yt-dlp
 require jq
 
 url="$1"
 
-playlistName="$(youtube-dl --no-warnings --dump-single-json "$url" | jq -r '.title')"
+playlistName="$(yt-dlp --no-warnings --dump-single-json "$url" | jq -r '.title')"
 playlistName="$(echo "$playlistName" | sed -e "s/[:\"]/_/g")"
 
 try mkdir "$playlistName"
 try cd "$playlistName"
 
-dl-audio -o "%(playlist_index)s. %(title)s.%(ext)s" "$url"
+# dl-audio -o "%(playlist_index)s. %(title)s.%(ext)s" "$url"
+dl-audio -o "%(playlist_index)s. %(title)s.%(ext)s" "$@"
