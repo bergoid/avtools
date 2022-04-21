@@ -1,0 +1,60 @@
+#!/bin/bash
+
+. rabot-utils
+if [ "$?" -ne "0" ]; then
+  echo "$0: Error while sourcing rabot-utils" >&2
+  exit 1
+fi
+
+function showHelp
+{
+cat << DOCSTRING
+Usage: $(basename "$0") FILENAME TRIM_POSITION [FADE_DURATION]
+
+'$(basename "$0")' cuts off the end of an audio file,
+optionally fading out just before the end.
+
+FILENAME is the input audio file.
+
+TRIM_POSITION is the place - in seconds - where the file is truncated.
+
+FADE_DURATION: the duration of the fade, in seconds.
+Fading ends at TRIM_POSITION. If FADE_DURATION is omitted, no fading
+happens.
+
+The output file will be in the same folder as FILENAME and have "_trimmed"
+added to its name, with the same extension as the input audio file.
+DOCSTRING
+}
+
+checkForHelp $1
+minNumArgs 2 $#
+
+require ffmpeg
+
+fullFilename="$(basename "$1")"
+exitOnError
+
+fileDir="$(dirname "$1")"
+exitOnError
+
+fileName="${fullFilename%.*}"
+exitOnError
+
+extension="${fullFilename##*.}"
+exitOnError
+
+trimPosition="$2"
+fadeDuration="$3"
+
+if [ -z "$fadeDuration" ]; then
+
+    ffmpeg -i "$fullFilename" -to "$trimPosition"  "${fileDir}/${fileName}_trimmed.${extension}"
+else
+
+    startFade="$(expr "$trimPosition" - "$fadeDuration")"
+    ffmpeg -i "$fullFilename" -af "afade=t=out:st=${startFade}:d=${fadeDuration}" -to "$trimPosition"  "${fileDir}/${fileName}_trimmed.${extension}"
+
+fi
+
+#ffmpeg -i "$2" -vf "transpose=$1" -c:a copy "${fileDir}/${fileName}_rotated.${extension}"
