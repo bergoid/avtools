@@ -18,5 +18,6 @@ DOCSTRING
 }
 
 checkForHelp $1
+require iconv
 
-echo "%(upload_date)s %(uploader)s %(title)s %(id)s.%(ext)s"
+echo "%(upload_date)s %(uploader)s %(title)s %(id)s.%(ext)s" | iconv -f utf-8 -t ascii//TRANSLIT

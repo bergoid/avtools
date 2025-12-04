@@ -18,4 +18,5 @@ minNumArgs 1 $#
 
 require yt-dlp
 
-yt-dlp -i --no-mtime -o "$(ytdl-formatstring)" "$@"
+yt-dlp -f 'bv*[height<=1080]+ba/b[height<=1080]' -i --no-mtime --restrict-filenames -o "$(ytdl-formatstring)" "$@"
+
